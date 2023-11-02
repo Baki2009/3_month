@@ -7,6 +7,8 @@
 # https://media.makeameme.org/created/you-win-nothing-b744e1771f.jpg
 # 3) Если пользователь проиграл, то отправляете данную фотографию
 # https://media.makeameme.org/created/sorry-you-lose.jpg
+# ДОП ЗАДАНИЕ:
+# 4) Загрузить файлы в GitHub с .gitignore
 
 from aiogram import Bot, Dispatcher, types, executor
 from config import token
@@ -49,6 +51,5 @@ async def handle_message(message: types.Message):
 
 executor.start_polling(dp)
 
-# ДОП ЗАДАНИЕ:
-# 4) Загрузить файлы в GitHub с .gitignore
+
 
