@@ -1,1 +1,6 @@
 config.py 
+__pycache__
+venv
+baki.db
+itbot.db
+ojak_kebab.db
