@@ -1,37 +1,25 @@
-import asyncio
-import logging
-import pymysql
-from aiogram import Bot, Dispatcher, types, executor
-from aiogram.types import ParseMode
-from config import token
-
-db = pymysql.connect(host='localhost', user='your_user', password='your_password', database='your_db')
-cursor = db.cursor()
-
-logging.basicConfig(level=logging.INFO)
-
-bot = Bot(token=token)
-dp = Dispatcher(bot)
-
-@dp.message_handler(commands=['start'])
-async def on_start(message: types.Message):
-    await message.answer("Привет! Я бот о ресторане Ojak Kebab. Выберите действие:", reply_markup=menu_markup)
-
-
-menu_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=True)
-menu_markup.add("Меню", "О нас", "Адрес", "Заказать еду")
-
-from aiogram import executor
-loop = asyncio.get_event_loop()
-executor.start_polling(dp, skip_updates=True)
-
-# ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я']
-        # if text == str: ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-            # cursor.execute("INSERT INTO food (name) VALUES (?)", (text))
-            # await message.answer("Введите номер телефона:")
-        # elif text == int:
-        #     cursor.execute("INSERT INTO food (number) VALUES (?)", (text))
-        #     await message.answer("Введите адрес доставки:")
-        # elif text == tuple:
-        #     cursor.execute("INSERT INTO food (delivery_address) VALUES (?)", (text))
-        #     await message.answer("Вы успешно взяли заказ! Ждите доставку")
+input_url = input("URL video:")
+print(input_url)
+# https://www.tiktok.com/@geeks_osh/video/7293896300020403474
+# https://www.tiktok.com/@geeks_osh/video/7293896300020403474?is_from_webapp=1&sender_device=pc&web_id=7289042945105217029
+split_url = input_url.split("/")
+print(split_url)
+current_id = split_url[5].split("?")
+print(current_id)
+video_api = requests.get(f"https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id={current_id}").json()
+# print(video_api)
+video_url = video_api.get("awame_list")
+print(video_url)
+if video_url:
+    print("Скачиваем видео", video_api.get('aweme_list')[0].get('desc'))
+    title = video_api.get('aweme_list')[0].get('desc')
+    try:
+        os.mkdir('video')
+    except:
+        pass
+    try:
+        with open(f'video/{title}.mp4', 'wb') as video_file:
+            video_api.write(requests.get(video_url).content)
+        print(f"Видео {title}.mp4 успешно скачан в папку video")
+    except Exception as error:
+        print(f"Error {error}")
